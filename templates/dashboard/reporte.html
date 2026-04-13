@@ -1,0 +1,130 @@
+{% extends 'base.html' %}
+
+{% block title %}Reporte de focos{% endblock %}
+
+{% block content %}
+<section class="reporte-page">
+    <div class="reporte-top">
+        <div class="reporte-hero">
+            <span class="reporte-badge">Registro sanitario</span>
+            <h1>Reporte de focos de riesgo</h1>
+            <p>
+                Registra focos o situaciones que puedan representar riesgo sanitario.
+                La información quedará almacenada para seguimiento dentro del sistema.
+            </p>
+        </div>
+    </div>
+
+    <div class="reporte-layout">
+        <div class="reporte-form-card">
+            <h2>Nuevo reporte</h2>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="reporte-flash">{{ message }}</div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <form action="/reporte" method="POST" class="reporte-form">
+                <div class="form-group">
+                    <label for="ubicacion">Ubicación</label>
+                    <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej: Barrio La Esperanza, sector norte" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="tipo_foco">Tipo de foco</label>
+                    <select id="tipo_foco" name="tipo_foco" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Agua estancada">Agua estancada</option>
+                        <option value="Basuras acumuladas">Basuras acumuladas</option>
+                        <option value="Criadero de mosquitos">Criadero de mosquitos</option>
+                        <option value="Canal o alcantarilla">Canal o alcantarilla</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="fecha_reporte">Fecha del reporte</label>
+                    <input type="date" id="fecha_reporte" name="fecha_reporte" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="nivel_riesgo">Nivel de riesgo</label>
+                    <select id="nivel_riesgo" name="nivel_riesgo" required>
+                        <option value="">Seleccione el nivel</option>
+                        <option value="bajo">Bajo</option>
+                        <option value="medio">Medio</option>
+                        <option value="alto">Alto</option>
+                    </select>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="descripcion">Descripción</label>
+                    <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe claramente la situación encontrada..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn-reporte">Guardar reporte</button>
+            </form>
+        </div>
+
+        <div class="reporte-side-card">
+            <h3>Recomendaciones</h3>
+            <ul>
+                <li>Indica una ubicación lo más clara posible.</li>
+                <li>Describe el foco con precisión.</li>
+                <li>Selecciona el nivel de riesgo de forma responsable.</li>
+                <li>Registra el reporte el mismo día si es posible.</li>
+            </ul>
+
+            <div class="reporte-mini-stats">
+                <div class="mini-box">
+                    <strong>{{ reportes|length }}</strong>
+                    <span>Reportes registrados</span>
+                </div>
+                <div class="mini-box">
+                    <strong>Activo</strong>
+                    <span>Monitoreo continuo</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="reportes-lista">
+        <div class="lista-header">
+            <h2>Reportes recientes</h2>
+            <p>Seguimiento de focos registrados en el sistema.</p>
+        </div>
+
+        {% if reportes %}
+            <div class="reportes-grid">
+                {% for reporte in reportes %}
+                <article class="reporte-item reporte-{{ reporte.nivel_riesgo }}">
+                    <div class="reporte-item-top">
+                        <span class="tag-riesgo tag-{{ reporte.nivel_riesgo }}">
+                            Riesgo {{ reporte.nivel_riesgo|capitalize }}
+                        </span>
+                        <span class="fecha-item">{{ reporte.fecha_reporte }}</span>
+                    </div>
+
+                    <h3>{{ reporte.tipo_foco }}</h3>
+                    <p class="ubicacion-item">📍 {{ reporte.ubicacion }}</p>
+                    <p class="descripcion-item">{{ reporte.descripcion }}</p>
+
+                    <div class="autor-item">
+                        Reportado por: {{ reporte.usuario_nombre if reporte.usuario_nombre else 'Usuario' }}
+                    </div>
+                </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="sin-reportes">
+                <h3>Aún no hay reportes</h3>
+                <p>Cuando registres un foco, aparecerá en esta sección.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+<script src="{{ url_for('static', filename='js/forms.js') }}"></script>

@@ -1,0 +1,51 @@
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <h3>Sistema Tropical</h3>
+            <p>
+                Plataforma informativa para la prevención, monitoreo y consulta
+                de enfermedades tropicales, orientada a estudiantes y personal de salud.
+            </p>
+        </div>
+
+        <div class="footer-links">
+            <h4>Navegación</h4>
+            <ul>
+                <li><a href="/">Inicio</a></li>
+                <li><a href="/enfermedades">Enfermedades</a></li>
+                <li><a href="/alertas">Alertas</a></li>
+                <li><a href="/noticias">Noticias</a></li>
+                <li><a href="/zonas">Zonas</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-links">
+            <h4>Acceso</h4>
+            <ul>
+                {% if session.get('usuario_id') %}
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/reporte">Reportar foco</a></li>
+                    <li><a href="/logout">Cerrar sesión</a></li>
+                {% else %}
+                    <li><a href="/login">Iniciar sesión</a></li>
+                    <li><a href="/registro">Registrarse</a></li>
+                {% endif %}
+            </ul>
+        </div>
+
+        <div class="footer-contacto">
+            <h4>Información</h4>
+            <div class="footer-info-box">
+                <span>📍 Seguimiento sanitario</span>
+                <span>🛡️ Prevención y monitoreo</span>
+                <span>📚 Uso académico e informativo</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <p>
+            © 2026 Sistema Tropical. Proyecto informativo sobre prevención de enfermedades tropicales.
+        </p>
+    </div>
+</footer>

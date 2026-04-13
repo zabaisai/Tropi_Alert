@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% block title %}Enfermedades tropicales{% endblock %}
+
+{% block content %}
+<section class="enfermedades-page">
+    <div class="enfermedades-top">
+        <span class="enfermedades-badge">Información preventiva</span>
+        <h1>Enfermedades tropicales</h1>
+        <p>
+            Consulta información clara, estructurada y preventiva sobre las enfermedades
+            tropicales más comunes, sus síntomas, formas de transmisión y signos de alarma.
+        </p>
+    </div>
+
+    <div class="enfermedades-grid">
+        {% for enfermedad in enfermedades %}
+        <article class="enfermedad-card">
+            <div class="enfermedad-header">
+                <div class="enfermedad-icon">🩺</div>
+                <h2>{{ enfermedad.nombre }}</h2>
+            </div>
+
+            <div class="enfermedad-info">
+                <p><strong>¿Qué es?</strong> {{ enfermedad.que_es }}</p>
+                <p><strong>¿Cómo se transmite?</strong> {{ enfermedad.transmision }}</p>
+                <p><strong>Tratamiento básico:</strong> {{ enfermedad.tratamiento }}</p>
+            </div>
+
+            <div class="bloque-lista">
+                <h3>Síntomas</h3>
+                <ul>
+                    {% for item in enfermedad.sintomas %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="bloque-lista">
+                <h3>Prevención</h3>
+                <ul>
+                    {% for item in enfermedad.prevencion %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div class="bloque-lista bloque-alerta">
+                <h3>Signos de alarma</h3>
+                <ul>
+                    {% for item in enfermedad.signos_alarma %}
+                    <li>{{ item }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </article>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

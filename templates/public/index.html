@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+<section class="hero-main">
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <span class="hero-badge">Sistema de monitoreo sanitario</span>
+
+        <h1>
+            Prevención, información y monitoreo
+            de enfermedades tropicales
+        </h1>
+
+        <p>
+            Plataforma diseñada para estudiantes y personal de salud, que permite
+            consultar alertas, zonas de riesgo y contenido preventivo de forma clara y centralizada.
+        </p>
+
+        <div class="hero-buttons">
+            <a href="/enfermedades" class="btn-primary">Explorar enfermedades</a>
+            <a href="/login" class="btn-secondary">Iniciar sesión</a>
+        </div>
+    </div>
+</section>
+
+<section class="home-section intro-section fade-in">
+    <div class="section-container">
+        <div class="section-head">
+            <span class="section-badge">Información general</span>
+            <h2>¿Qué encontrarás en esta plataforma?</h2>
+            <p>
+                Accede a información clara, estructurada y actualizada sobre enfermedades tropicales,
+                zonas de riesgo, alertas sanitarias y herramientas de monitoreo.
+            </p>
+        </div>
+
+        <div class="intro-grid">
+            <div class="intro-card">
+                <div class="intro-icon">🦟</div>
+                <h3>Enfermedades</h3>
+                <p>Consulta información detallada sobre dengue, malaria, zika y otras enfermedades tropicales.</p>
+            </div>
+
+            <div class="intro-card">
+                <div class="intro-icon">🚨</div>
+                <h3>Alertas</h3>
+                <p>Revisa advertencias sanitarias activas y niveles de riesgo reportados.</p>
+            </div>
+
+            <div class="intro-card">
+                <div class="intro-icon">🗺️</div>
+                <h3>Zonas de riesgo</h3>
+                <p>Identifica áreas bajo seguimiento y consulta su estado actual.</p>
+            </div>
+
+            <div class="intro-card">
+                <div class="intro-icon">📋</div>
+                <h3>Reportes</h3>
+                <p>Registra focos sanitarios y aporta al monitoreo preventivo del sistema.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-section preview-section fade-in">
+    <div class="section-container">
+        <div class="section-head">
+            <span class="section-badge">Enfermedades destacadas</span>
+            <h2>Enfermedades más relevantes</h2>
+            <p>Conoce algunas de las enfermedades tropicales más importantes incluidas en la plataforma.</p>
+        </div>
+
+        <div class="preview-grid">
+            <div class="preview-card">
+                <h3>Dengue</h3>
+                <p>Enfermedad viral transmitida por la picadura de mosquitos infectados.</p>
+            </div>
+
+            <div class="preview-card">
+                <h3>Malaria</h3>
+                <p>Enfermedad parasitaria que afecta principalmente zonas tropicales y subtropicales.</p>
+            </div>
+
+            <div class="preview-card">
+                <h3>Zika</h3>
+                <p>Virus transmitido por el mosquito Aedes, asociado a brotes en climas cálidos.</p>
+            </div>
+
+            <div class="preview-card">
+                <h3>Fiebre amarilla</h3>
+                <p>Infección viral aguda que puede causar complicaciones graves si no se detecta a tiempo.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-section steps-section fade-in">
+    <div class="section-container">
+        <div class="section-head">
+            <span class="section-badge">Funcionamiento</span>
+            <h2>¿Cómo funciona?</h2>
+            <p>La plataforma está pensada para ofrecer información clara y facilitar el monitoreo sanitario.</p>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Consulta</h3>
+                <p>Explora enfermedades, síntomas, prevención, alertas y zonas de riesgo.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Analiza</h3>
+                <p>Revisa la información actual para comprender el nivel de riesgo en distintas áreas.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Reporta</h3>
+                <p>Registra focos o situaciones sanitarias para apoyar el seguimiento preventivo.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="home-section cta-section fade-in">
+    <div class="section-container cta-container">
+        <span class="section-badge badge-light">Acción</span>
+        <h2>Empieza ahora</h2>
+        <p>Protege tu entorno con información clara, monitoreo y registro de focos sanitarios.</p>
+
+        <div class="hero-buttons">
+            <a href="/enfermedades" class="btn-primary">Ver enfermedades</a>
+            <a href="/registro" class="btn-secondary">Crear cuenta</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

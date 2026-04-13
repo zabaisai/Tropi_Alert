@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Noticias sanitarias{% endblock %}
+
+{% block content %}
+<section class="noticias-page">
+    <div class="noticias-top">
+        <span class="noticias-badge">Actualidad informativa</span>
+        <h1>Noticias y novedades</h1>
+        <p>
+            Consulta campañas, jornadas, recomendaciones y novedades relacionadas
+            con prevención, monitoreo y salud pública.
+        </p>
+    </div>
+
+    <div class="noticias-resumen">
+        <div class="noticias-stat">
+            <h3>{{ noticias|length }}</h3>
+            <p>Noticias registradas</p>
+        </div>
+        <div class="noticias-stat">
+            <h3>Prevención</h3>
+            <p>Enfoque educativo</p>
+        </div>
+        <div class="noticias-stat">
+            <h3>Salud pública</h3>
+            <p>Información relevante</p>
+        </div>
+    </div>
+
+    <div class="noticias-grid">
+        {% if noticias %}
+            {% for noticia in noticias %}
+            <article class="noticia-card">
+                <div class="noticia-icono">📰</div>
+
+                <div class="noticia-content">
+                    <h2>{{ noticia.titulo }}</h2>
+                    <p class="noticia-texto">{{ noticia.contenido }}</p>
+
+                    <div class="noticia-meta">
+                        <span><strong>Fecha:</strong> {{ noticia.fecha_publicacion }}</span>
+                        <span><strong>Autor:</strong> {{ noticia.autor if noticia.autor else 'Sistema' }}</span>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="sin-noticias">
+                <h3>No hay noticias registradas</h3>
+                <p>Actualmente no se han publicado noticias en el sistema.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

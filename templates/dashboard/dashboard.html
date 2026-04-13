@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="dashboard-wrapper">
+    <div class="dashboard-hero">
+        <div class="dashboard-hero-text">
+            <span class="dashboard-badge">📊 Panel principal</span>
+            <h1>Bienvenido, {{ session['usuario_nombre'] }}</h1>
+            <p>
+                Accede rápidamente a la información clave del sistema, revisa alertas,
+                consulta zonas de riesgo y reporta focos sanitarios desde un solo lugar.
+            </p>
+        </div>
+
+        <div class="dashboard-hero-stats">
+            <div class="stat-box">
+                <h3>5</h3>
+                <p>Enfermedades monitoreadas</p>
+            </div>
+            <div class="stat-box">
+                <h3>3</h3>
+                <p>Niveles de riesgo</p>
+            </div>
+            <div class="stat-box">
+                <h3>24/7</h3>
+                <p>Consulta informativa</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="dashboard-grid">
+        <div class="dashboard-card">
+            <div class="card-icon blue">🦟</div>
+            <h3>Enfermedades</h3>
+            <p>Consulta información clara sobre dengue, malaria, chikungunya, zika y fiebre amarilla.</p>
+            <a href="/enfermedades">Explorar</a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon red">🚨</div>
+            <h3>Alertas</h3>
+            <p>Revisa alertas activas, advertencias preventivas y niveles de riesgo sanitario.</p>
+            <a href="/alertas">Ver alertas</a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon green">📰</div>
+            <h3>Noticias</h3>
+            <p>Mantente informado sobre campañas, prevención y novedades relacionadas con salud pública.</p>
+            <a href="/noticias">Ver noticias</a>
+        </div>
+
+        <div class="dashboard-card">
+            <div class="card-icon orange">📍</div>
+            <h3>Zonas de riesgo</h3>
+            <p>Identifica sectores en observación y consulta el nivel de riesgo por zona.</p>
+            <a href="/zonas">Consultar zonas</a>
+        </div>
+
+        <div class="dashboard-card destacado">
+            <div class="card-icon yellow">📝</div>
+            <h3>Reportar foco</h3>
+            <p>Registra posibles focos de infección o situaciones de riesgo para seguimiento sanitario.</p>
+            <a href="/reporte">Crear reporte</a>
+        </div>
+
+        <div class="dashboard-card logout-card">
+            <div class="card-icon dark">🔒</div>
+            <h3>Cerrar sesión</h3>
+            <p>Finaliza tu sesión actual de forma segura dentro de la plataforma.</p>
+            <a href="/logout">Salir del sistema</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

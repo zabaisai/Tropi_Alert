@@ -1,0 +1,140 @@
+.enfermedades-page {
+    min-height: calc(100vh - 90px);
+    padding: 50px 55px 70px;
+    background: linear-gradient(180deg, #eef5fb 0%, #f8fbfd 100%);
+}
+
+.enfermedades-top {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    text-align: center;
+}
+
+.enfermedades-badge {
+    display: inline-block;
+    background: #dbeafe;
+    color: #0f4c81;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 0.92rem;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.enfermedades-top h1 {
+    font-size: 3rem;
+    color: #0f172a;
+    margin-bottom: 14px;
+}
+
+.enfermedades-top p {
+    font-size: 1.08rem;
+    color: #475569;
+    line-height: 1.8;
+}
+
+.enfermedades-grid {
+    max-width: 1300px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 26px;
+}
+
+.enfermedad-card {
+    background: white;
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 18px 36px rgba(15, 76, 129, 0.08);
+    transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.enfermedad-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 24px 42px rgba(15, 76, 129, 0.14);
+}
+
+.enfermedad-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 22px;
+}
+
+.enfermedad-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    background: #dbeafe;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.35rem;
+}
+
+.enfermedad-header h2 {
+    font-size: 2rem;
+    color: #0f4c81;
+    margin: 0;
+}
+
+.enfermedad-info p {
+    color: #334155;
+    line-height: 1.75;
+    margin-bottom: 12px;
+    font-size: 1rem;
+}
+
+.bloque-lista {
+    margin-top: 22px;
+    padding: 18px 20px;
+    border-radius: 18px;
+    background: #f8fbfd;
+    border: 1px solid #e2e8f0;
+}
+
+.bloque-lista h3 {
+    color: #0f172a;
+    font-size: 1.1rem;
+    margin-bottom: 12px;
+}
+
+.bloque-lista ul {
+    margin: 0;
+    padding-left: 20px;
+}
+
+.bloque-lista li {
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 6px;
+}
+
+.bloque-alerta {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+}
+
+.bloque-alerta h3 {
+    color: #b91c1c;
+}
+
+@media (max-width: 1000px) {
+    .enfermedades-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 700px) {
+    .enfermedades-page {
+        padding: 35px 20px 50px;
+    }
+
+    .enfermedades-top h1 {
+        font-size: 2.2rem;
+    }
+
+    .enfermedad-header h2 {
+        font-size: 1.6rem;
+    }
+}

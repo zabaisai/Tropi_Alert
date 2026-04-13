@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+
+{% block title %}Zonas de riesgo{% endblock %}
+
+{% block content %}
+<section class="zonas-page">
+    <div class="zonas-top">
+        <span class="zonas-badge">Seguimiento territorial</span>
+        <h1>Zonas de riesgo</h1>
+        <p>
+            Consulta las áreas monitoreadas, su nivel de riesgo y la descripción
+            sanitaria registrada actualmente en el sistema.
+        </p>
+    </div>
+
+    <div class="zonas-resumen">
+        <div class="zona-stat">
+            <h3>{{ zonas|length }}</h3>
+            <p>Zonas registradas</p>
+        </div>
+        <div class="zona-stat alto">
+            <h3>Alto</h3>
+            <p>Intervención prioritaria</p>
+        </div>
+        <div class="zona-stat medio">
+            <h3>Medio</h3>
+            <p>Seguimiento activo</p>
+        </div>
+        <div class="zona-stat bajo">
+            <h3>Bajo</h3>
+            <p>Observación preventiva</p>
+        </div>
+    </div>
+
+    <div class="zonas-grid">
+        {% if zonas %}
+            {% for zona in zonas %}
+            <article class="zona-card zona-{{ zona.nivel_riesgo }}">
+                <div class="zona-header">
+                    <div class="zona-icono">
+                        {% if zona.nivel_riesgo == 'alto' %}
+                            📍
+                        {% elif zona.nivel_riesgo == 'medio' %}
+                            🗺️
+                        {% else %}
+                            ✅
+                        {% endif %}
+                    </div>
+
+                    <div class="zona-header-info">
+                        <span class="zona-nivel nivel-{{ zona.nivel_riesgo }}">
+                            Riesgo {{ zona.nivel_riesgo|capitalize }}
+                        </span>
+                        <h2>{{ zona.nombre_zona }}</h2>
+                    </div>
+                </div>
+
+                <p class="zona-descripcion">{{ zona.descripcion }}</p>
+
+                <div class="zona-coordenadas">
+                    <div class="coord-box">
+                        <span class="coord-label">Latitud</span>
+                        <strong>{{ zona.latitud if zona.latitud is not none else 'No registrada' }}</strong>
+                    </div>
+                    <div class="coord-box">
+                        <span class="coord-label">Longitud</span>
+                        <strong>{{ zona.longitud if zona.longitud is not none else 'No registrada' }}</strong>
+                    </div>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="sin-zonas">
+                <h3>No hay zonas registradas</h3>
+                <p>Actualmente no se han registrado zonas de riesgo en el sistema.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

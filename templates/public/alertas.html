@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+
+{% block title %}Alertas sanitarias{% endblock %}
+
+{% block content %}
+<section class="alertas-page">
+    <div class="alertas-top">
+        <span class="alertas-badge">Monitoreo sanitario</span>
+        <h1>Alertas activas</h1>
+        <p>
+            Consulta advertencias preventivas, novedades sanitarias y niveles de riesgo
+            reportados actualmente en el sistema.
+        </p>
+    </div>
+
+    <div class="alertas-resumen">
+        <div class="resumen-card">
+            <h3 id="contador-alertas">{{ alertas|length }}</h3>
+            <p>Alertas visibles</p>
+        </div>
+        <div class="resumen-card riesgo-alto">
+            <h3>Alto</h3>
+            <p>Atención prioritaria</p>
+        </div>
+        <div class="resumen-card riesgo-medio">
+            <h3>Medio</h3>
+            <p>Seguimiento preventivo</p>
+        </div>
+        <div class="resumen-card riesgo-bajo">
+            <h3>Bajo</h3>
+            <p>Observación estable</p>
+        </div>
+    </div>
+
+    <div class="alertas-filtros">
+        <div class="filtro-grupo">
+            <label for="filtro-riesgo">Filtrar por riesgo</label>
+            <select id="filtro-riesgo">
+                <option value="todos">Todos</option>
+                <option value="alto">Alto</option>
+                <option value="medio">Medio</option>
+                <option value="bajo">Bajo</option>
+            </select>
+        </div>
+
+        <div class="filtro-grupo">
+            <label for="buscador-alertas">Buscar alerta</label>
+            <input type="text" id="buscador-alertas" placeholder="Buscar por título o descripción">
+        </div>
+
+        <div class="filtro-boton-wrap">
+            <button id="limpiar-filtros" type="button">Limpiar filtros</button>
+        </div>
+    </div>
+
+    <div id="sin-resultados-alertas" class="sin-alertas oculto">
+        <h3>No se encontraron alertas</h3>
+        <p>Prueba con otro nivel de riesgo o con otra palabra clave.</p>
+    </div>
+
+    <div class="alertas-grid" id="alertas-grid">
+        {% if alertas %}
+            {% for alerta in alertas %}
+            <article
+                class="alerta-card alerta-{{ alerta.nivel_riesgo }}"
+                data-riesgo="{{ alerta.nivel_riesgo }}"
+                data-titulo="{{ alerta.titulo|lower }}"
+                data-descripcion="{{ alerta.descripcion|lower }}"
+            >
+                <div class="alerta-header">
+                    <div class="alerta-icono">
+                        {% if alerta.nivel_riesgo == 'alto' %}
+                            🚨
+                        {% elif alerta.nivel_riesgo == 'medio' %}
+                            ⚠️
+                        {% else %}
+                            ✅
+                        {% endif %}
+                    </div>
+
+                    <div class="alerta-header-info">
+                        <span class="nivel nivel-{{ alerta.nivel_riesgo }}">
+                            Riesgo {{ alerta.nivel_riesgo|capitalize }}
+                        </span>
+                        <h2>{{ alerta.titulo }}</h2>
+                    </div>
+                </div>
+
+                <p class="alerta-descripcion">{{ alerta.descripcion }}</p>
+
+                <div class="alerta-footer">
+                    <span class="fecha">Fecha: {{ alerta.fecha_publicacion }}</span>
+                    <span class="estado">{{ alerta.estado|capitalize }}</span>
+                </div>
+            </article>
+            {% endfor %}
+        {% else %}
+            <div class="sin-alertas">
+                <h3>No hay alertas activas</h3>
+                <p>Actualmente no se registran alertas sanitarias activas en el sistema.</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<script src="{{ url_for('static', filename='js/alertas.js') }}"></script>
+{% endblock %}
