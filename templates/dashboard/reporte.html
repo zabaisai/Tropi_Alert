@@ -27,10 +27,16 @@
                 {% endif %}
             {% endwith %}
 
-            <form action="/reporte" method="POST" class="reporte-form">
+            <form action="/reporte" method="POST" class="reporte-form" enctype="multipart/form-data">
                 <div class="form-group">
                     <label for="ubicacion">Ubicación</label>
-                    <input type="text" id="ubicacion" name="ubicacion" placeholder="Ej: Barrio La Esperanza, sector norte" required>
+                    <input 
+                        type="text" 
+                        id="ubicacion" 
+                        name="ubicacion" 
+                        placeholder="Ej: Barrio La Esperanza, sector norte" 
+                        required
+                    >
                 </div>
 
                 <div class="form-group">
@@ -47,7 +53,12 @@
 
                 <div class="form-group">
                     <label for="fecha_reporte">Fecha del reporte</label>
-                    <input type="date" id="fecha_reporte" name="fecha_reporte" required>
+                    <input 
+                        type="date" 
+                        id="fecha_reporte" 
+                        name="fecha_reporte" 
+                        required
+                    >
                 </div>
 
                 <div class="form-group">
@@ -62,7 +73,23 @@
 
                 <div class="form-group full-width">
                     <label for="descripcion">Descripción</label>
-                    <textarea id="descripcion" name="descripcion" rows="5" placeholder="Describe claramente la situación encontrada..." required></textarea>
+                    <textarea 
+                        id="descripcion" 
+                        name="descripcion" 
+                        rows="5" 
+                        placeholder="Describe claramente la situación encontrada..." 
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="form-group full-width">
+                    <label for="foto_reporte">Foto del foco</label>
+                    <input 
+                        type="file" 
+                        id="foto_reporte" 
+                        name="foto_reporte" 
+                        accept="image/png, image/jpeg, image/jpg, image/webp"
+                    >
                 </div>
 
                 <button type="submit" class="btn-reporte">Guardar reporte</button>
@@ -91,6 +118,59 @@
         </div>
     </div>
 
+    <div class="profesionales-section">
+        <div class="lista-header">
+            <h2>Profesionales que trabajan con nosotros</h2>
+            <p>Personal de salud registrado en Tropi Alert para apoyar el seguimiento sanitario.</p>
+        </div>
+
+        {% if profesionales %}
+            <div class="profesionales-grid">
+                {% for profesional in profesionales %}
+                    <article class="profesional-card">
+                        {% if profesional.foto %}
+                            <img 
+                                src="{{ url_for('static', filename=profesional.foto) }}" 
+                                alt="Foto de {{ profesional.nombre }}"
+                                class="foto-profesional"
+                            >
+                        {% else %}
+                            <div class="foto-profesional-placeholder">
+                                👤
+                            </div>
+                        {% endif %}
+
+                        <div class="profesional-info">
+                            <h3>{{ profesional.nombre }}</h3>
+
+                            {% if profesional.area %}
+                                <p>{{ profesional.area }}</p>
+                            {% endif %}
+
+                            {% if session.get('rol') == 'gerente' %}
+                                <form 
+                                    action="{{ url_for('dashboard.eliminar_personal_salud', usuario_id=profesional.id) }}" 
+                                    method="POST"
+                                    class="form-eliminar-profesional"
+                                    onsubmit="return confirm('¿Seguro que deseas eliminar este personal de salud? También se eliminarán sus reportes.');"
+                                >
+                                    <button type="submit" class="btn-eliminar-reporte">
+                                        Eliminar profesional
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </article>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="sin-reportes">
+                <h3>Aún no hay profesionales registrados</h3>
+                <p>Cuando se registren usuarios como personal de salud, aparecerán en esta sección.</p>
+            </div>
+        {% endif %}
+    </div>
+
     <div class="reportes-lista">
         <div class="lista-header">
             <h2>Reportes recientes</h2>
@@ -100,22 +180,59 @@
         {% if reportes %}
             <div class="reportes-grid">
                 {% for reporte in reportes %}
-                <article class="reporte-item reporte-{{ reporte.nivel_riesgo }}">
-                    <div class="reporte-item-top">
-                        <span class="tag-riesgo tag-{{ reporte.nivel_riesgo }}">
-                            Riesgo {{ reporte.nivel_riesgo|capitalize }}
-                        </span>
-                        <span class="fecha-item">{{ reporte.fecha_reporte }}</span>
-                    </div>
+                    <article class="reporte-item reporte-{{ reporte.nivel_riesgo }}">
+                        <div class="reporte-item-top">
+                            <span class="tag-riesgo tag-{{ reporte.nivel_riesgo }}">
+                                Riesgo {{ reporte.nivel_riesgo|capitalize }}
+                            </span>
+                            <span class="fecha-item">{{ reporte.fecha_reporte }}</span>
+                        </div>
 
-                    <h3>{{ reporte.tipo_foco }}</h3>
-                    <p class="ubicacion-item">📍 {{ reporte.ubicacion }}</p>
-                    <p class="descripcion-item">{{ reporte.descripcion }}</p>
+                        <h3>{{ reporte.tipo_foco }}</h3>
 
-                    <div class="autor-item">
-                        Reportado por: {{ reporte.usuario_nombre if reporte.usuario_nombre else 'Usuario' }}
-                    </div>
-                </article>
+                        <p class="ubicacion-item">
+                            📍 {{ reporte.ubicacion }}
+                        </p>
+
+                        <p class="descripcion-item">
+                            {{ reporte.descripcion }}
+                        </p>
+
+                        {% if reporte.foto_reporte %}
+                            <div class="foto-reporte-box">
+                                <img 
+                                    src="{{ url_for('static', filename=reporte.foto_reporte) }}" 
+                                    alt="Foto del foco reportado"
+                                    class="foto-reporte"
+                                >
+                            </div>
+                        {% endif %}
+
+                        <div class="autor-item">
+                            <div>
+                                <strong>Reportado por:</strong> 
+                                {{ reporte.usuario_nombre if reporte.usuario_nombre else 'Usuario' }}
+
+                                {% if reporte.area %}
+                                    <br>
+                                    <span>Área: {{ reporte.area }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        {% if session.get('rol') in ['admin', 'gerente'] %}
+                            <form 
+                                action="{{ url_for('dashboard.eliminar_reporte', reporte_id=reporte.id) }}" 
+                                method="POST"
+                                class="form-eliminar-reporte"
+                                onsubmit="return confirm('¿Seguro que deseas eliminar este reporte?');"
+                            >
+                                <button type="submit" class="btn-eliminar-reporte">
+                                    Eliminar reporte
+                                </button>
+                            </form>
+                        {% endif %}
+                    </article>
                 {% endfor %}
             </div>
         {% else %}
@@ -126,5 +243,6 @@
         {% endif %}
     </div>
 </section>
-{% endblock %}
+
 <script src="{{ url_for('static', filename='js/forms.js') }}"></script>
+{% endblock %}

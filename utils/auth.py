@@ -5,6 +5,7 @@ def login_usuario(usuario):
     session['usuario_id'] = usuario['id']
     session['usuario_nombre'] = usuario['nombre']
     session['usuario_rol'] = usuario['rol']
+    session['rol'] = usuario['rol']
 
 
 def logout_usuario():

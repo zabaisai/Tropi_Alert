@@ -5,7 +5,7 @@
 {% block content %}
 <section class="auth-container">
     <div class="auth-card">
-        <div class="auth-icon-top">📝</div>
+        <div class="auth-icon-top"></div>
 
         <h2>Crear cuenta</h2>
         <p class="auth-subtitle">
@@ -20,36 +20,97 @@
             {% endif %}
         {% endwith %}
 
-        <form action="/guardar-registro" method="POST" class="form-registro">
-    <div class="input-group">
-        <label for="nombre">Nombre completo</label>
-        <input type="text" id="nombre" name="nombre" placeholder="Ingresa tu nombre completo" required>
-    </div>
+        <form action="/guardar-registro" method="POST" class="form-registro" enctype="multipart/form-data">
+            <div class="input-group">
+                <label for="nombre">Nombre completo</label>
+                <input 
+                    type="text" 
+                    id="nombre" 
+                    name="nombre" 
+                    placeholder="Ingresa tu nombre completo" 
+                    required
+                >
+            </div>
 
-    <div class="input-group">
-        <label for="correo">Correo electrónico</label>
-        <input type="email" id="correo" name="correo" placeholder="Ingresa tu correo" required>
-    </div>
+            <div class="input-group">
+                <label for="correo">Correo electrónico</label>
+                <input 
+                    type="email" 
+                    id="correo" 
+                    name="correo" 
+                    placeholder="Ingresa tu correo" 
+                    required
+                >
+            </div>
 
-    <div class="input-group">
-        <label for="contrasena">Contraseña</label>
-        <input type="password" id="contrasena" name="contrasena" placeholder="Crea una contraseña" required>
-    </div>
+            <div class="input-group">
+                <label for="contrasena">Contraseña</label>
+                <input 
+                    type="password" 
+                    id="contrasena" 
+                    name="contrasena" 
+                    placeholder="Crea una contraseña" 
+                    required
+                >
+            </div>
 
-    <div class="input-group">
-        <label for="rol">Rol</label>
-        <select id="rol" name="rol" required>
-            <option value="">Seleccione un rol</option>
-            <option value="estudiante">Estudiante</option>
-            <option value="salud">Personal de salud</option>
-        </select>
-    </div>
+            <div class="input-group">
+                <label for="rol">Tipo de usuario</label>
+                <select id="rol" name="rol" required>
+                    <option value="">Seleccione un tipo de usuario</option>
+                    <option value="estudiante">Estudiante</option>
+                    <option value="salud">Personal de salud</option>
+                    <option value="gerente">Gerente</option>
+                </select>
+            </div>
 
-    <button type="submit">Crear cuenta</button>
-</form>
+            <div id="campos-salud" style="display: none;">
+                <div class="input-group">
+                    <label for="area">Área profesional</label>
+                    <input 
+                        type="text" 
+                        id="area" 
+                        name="area" 
+                        placeholder="Ej: Enfermería, Epidemiología, Medicina general"
+                    >
+                </div>
+
+                <div class="input-group">
+                    <label for="foto">Foto de perfil profesional</label>
+                    <input 
+                        type="file" 
+                        id="foto" 
+                        name="foto" 
+                        accept="image/png, image/jpeg, image/jpg, image/webp"
+                    >
+                </div>
+            </div>
+
+            <button type="submit">Crear cuenta</button>
+        </form>
 
         <p>¿Ya tienes cuenta? <a href="/login">Inicia sesión</a></p>
     </div>
 </section>
+
+<script>
+    const rolSelect = document.getElementById('rol');
+    const camposSalud = document.getElementById('campos-salud');
+    const areaInput = document.getElementById('area');
+    const fotoInput = document.getElementById('foto');
+
+    rolSelect.addEventListener('change', function () {
+        if (this.value === 'salud') {
+            camposSalud.style.display = 'block';
+            areaInput.setAttribute('required', 'required');
+            fotoInput.setAttribute('required', 'required');
+        } else {
+            camposSalud.style.display = 'none';
+            areaInput.removeAttribute('required');
+            fotoInput.removeAttribute('required');
+            areaInput.value = '';
+            fotoInput.value = '';
+        }
+    });
+</script>
 {% endblock %}
-<script src="{{ url_for('static', filename='js/forms.js') }}"></script>

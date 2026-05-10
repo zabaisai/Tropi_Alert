@@ -17,6 +17,27 @@ def crear_usuario(nombre, correo, contrasena, rol):
     cursor.execute(sql, valores)
     conexion.commit()
 
+    usuario_id = cursor.lastrowid
+
+    cursor.close()
+    conexion.close()
+
+    return usuario_id
+
+
+def crear_personal_salud(usuario_id, foto, area):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    sql = """
+        INSERT INTO personal_salud (usuario_id, foto, area)
+        VALUES (%s, %s, %s)
+    """
+    valores = (usuario_id, foto, area)
+
+    cursor.execute(sql, valores)
+    conexion.commit()
+
     cursor.close()
     conexion.close()
 
@@ -60,3 +81,75 @@ def obtener_todos_los_usuarios():
     conexion.close()
 
     return usuarios
+def obtener_profesionales_salud():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    sql = """
+        SELECT 
+            u.id,
+            u.nombre,
+            u.correo,
+            u.fecha_registro,
+            ps.area,
+            ps.foto
+        FROM usuarios u
+        INNER JOIN personal_salud ps ON u.id = ps.usuario_id
+        WHERE u.rol = 'salud'
+        ORDER BY u.id DESC
+    """
+
+    cursor.execute(sql)
+    profesionales = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return profesionales
+def obtener_profesionales_salud():
+    conexion = obtener_conexion()
+    cursor = conexion.cursor(dictionary=True)
+
+    sql = """
+        SELECT 
+            u.id,
+            u.nombre,
+            u.correo,
+            u.fecha_registro,
+            ps.area,
+            ps.foto
+        FROM usuarios u
+        INNER JOIN personal_salud ps ON u.id = ps.usuario_id
+        WHERE u.rol = 'salud'
+        ORDER BY u.id DESC
+    """
+
+    cursor.execute(sql)
+    profesionales = cursor.fetchall()
+
+    cursor.close()
+    conexion.close()
+
+    return profesionales
+
+
+def eliminar_personal_salud_por_usuario_id(usuario_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    # Primero eliminamos los reportes hechos por ese personal de salud
+    sql_reportes = "DELETE FROM reportes_focos WHERE usuario_id = %s"
+    cursor.execute(sql_reportes, (usuario_id,))
+
+    # Luego eliminamos la información adicional del personal de salud
+    sql_personal = "DELETE FROM personal_salud WHERE usuario_id = %s"
+    cursor.execute(sql_personal, (usuario_id,))
+
+    # Finalmente eliminamos el usuario
+    sql_usuario = "DELETE FROM usuarios WHERE id = %s AND rol = 'salud'"
+    cursor.execute(sql_usuario, (usuario_id,))
+
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()
