@@ -1,6 +1,8 @@
+import os
+
 class Config:
-    SECRET_KEY = 'clave_super_secreta_123'
-    MYSQL_HOST = 'localhost'
-    MYSQL_USER = 'root'
-    MYSQL_PASSWORD = ''
-    MYSQL_DB = 'enfermedades_tropicales'
+    SECRET_KEY = os.getenv('SECRET_KEY', 'clave_super_secreta_123')
+    MYSQL_HOST = os.getenv('MYSQL_HOST', 'localhost')
+    MYSQL_USER = os.getenv('MYSQL_USER', 'root')
+    MYSQL_PASSWORD = os.getenv('MYSQL_PASSWORD', '')
+    MYSQL_DB = os.getenv('MYSQL_DB', 'enfermedades_tropicales')

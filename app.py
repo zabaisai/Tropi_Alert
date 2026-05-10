@@ -6,6 +6,7 @@ from routes.dashboard_routes import dashboard_bp
 from routes.admin_routes import admin_bp
 from utils.helpers import color_riesgo, resumen_texto
 
+
 app = Flask(__name__)
 app.config.from_object(Config)
 
