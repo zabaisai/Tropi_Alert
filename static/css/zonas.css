@@ -5,7 +5,7 @@
 }
 
 .zonas-top {
-    max-width: 900px;
+    max-width: 980px;
     margin: 0 auto 36px;
     text-align: center;
 }
@@ -34,15 +34,15 @@
 }
 
 .zonas-resumen {
-    max-width: 1300px;
-    margin: 0 auto 30px;
+    max-width: 1250px;
+    margin: 0 auto 34px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
 }
 
 .zona-stat {
-    background: white;
+    background: #ffffff;
     border-radius: 20px;
     padding: 24px;
     box-shadow: 0 14px 30px rgba(15, 76, 129, 0.08);
@@ -71,148 +71,339 @@
     border-top: 5px solid #16a34a;
 }
 
-.zonas-grid {
-    max-width: 1300px;
+/* Layout principal */
+
+.zonas-mapa-layout {
+    max-width: 1250px;
     margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
+    grid-template-columns: 1.35fr 0.9fr;
+    gap: 28px;
+    align-items: stretch;
 }
 
-.zona-card {
-    background: white;
-    border-radius: 24px;
-    padding: 28px;
+.mapa-colombia-card,
+.zona-info-panel {
+    background: #ffffff;
+    border-radius: 28px;
     box-shadow: 0 18px 36px rgba(15, 76, 129, 0.08);
-    transition: transform 0.28s ease, box-shadow 0.28s ease;
-    border-left: 6px solid transparent;
 }
 
-.zona-card:hover {
-    transform: translateY(-6px);
-    box-shadow: 0 24px 42px rgba(15, 76, 129, 0.14);
+.mapa-colombia-card {
+    padding: 28px;
 }
 
-.zona-alto {
-    border-left-color: #dc2626;
+.mapa-header {
+    margin-bottom: 20px;
 }
 
-.zona-medio {
-    border-left-color: #f59e0b;
-}
-
-.zona-bajo {
-    border-left-color: #16a34a;
-}
-
-.zona-header {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-bottom: 18px;
-}
-
-.zona-icono {
-    width: 58px;
-    height: 58px;
-    border-radius: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.4rem;
-    background: #f8fafc;
-}
-
-.zona-header-info h2 {
-    font-size: 1.45rem;
-    color: #0f172a;
-    margin-top: 8px;
-}
-
-.zona-nivel {
+.mapa-header span {
     display: inline-block;
-    padding: 7px 12px;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    color: #0f4c81;
+    font-weight: 800;
+    margin-bottom: 6px;
 }
 
-.nivel-alto {
+.mapa-header p {
+    color: #64748b;
+    line-height: 1.6;
+}
+
+/* Mapa visual */
+
+.mapa-colombia {
+    position: relative;
+    width: 100%;
+    min-height: 620px;
+    border-radius: 36px;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 45% 20%, rgba(19, 99, 161, 0.12), transparent 30%),
+        radial-gradient(circle at 55% 60%, rgba(22, 163, 74, 0.10), transparent 32%),
+        linear-gradient(180deg, #f8fbfd 0%, #edf5fb 100%);
+    border: 1px solid #dbe4ee;
+}
+
+.mapa-colombia::before {
+    content: "";
+    position: absolute;
+    left: 18%;
+    top: 5%;
+    width: 58%;
+    height: 88%;
+    background: linear-gradient(180deg, #dbeafe, #e8f6ee);
+    clip-path: polygon(
+        43% 0%,
+        58% 5%,
+        67% 15%,
+        60% 24%,
+        70% 33%,
+        62% 43%,
+        74% 54%,
+        68% 66%,
+        58% 76%,
+        53% 91%,
+        40% 100%,
+        32% 88%,
+        26% 77%,
+        18% 65%,
+        23% 52%,
+        12% 40%,
+        20% 28%,
+        28% 17%,
+        34% 7%
+    );
+    border: 2px solid rgba(15, 76, 129, 0.16);
+    box-shadow: inset 0 0 35px rgba(15, 76, 129, 0.08);
+}
+
+.departamento {
+    position: absolute;
+    z-index: 2;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 14px;
+    font-weight: 800;
+    font-size: 0.82rem;
+    color: #0f172a;
+    cursor: pointer;
+    box-shadow: 0 10px 20px rgba(15, 76, 129, 0.13);
+    transition: 0.25s ease;
+}
+
+.departamento:hover {
+    transform: translateY(-3px) scale(1.03);
+}
+
+.departamento.activo {
+    outline: 4px solid rgba(15, 76, 129, 0.18);
+    transform: translateY(-3px) scale(1.05);
+}
+
+.dept-riesgo-alto {
     background: #fee2e2;
     color: #b91c1c;
 }
 
-.nivel-medio {
+.dept-riesgo-medio {
     background: #fef3c7;
     color: #b45309;
 }
 
-.nivel-bajo {
+.dept-riesgo-bajo {
     background: #dcfce7;
     color: #15803d;
 }
 
-.zona-descripcion {
+/* Posiciones aproximadas */
+
+.dept-caribe {
+    top: 9%;
+    left: 44%;
+}
+
+.dept-bolivar {
+    top: 18%;
+    left: 48%;
+}
+
+.dept-antioquia {
+    top: 27%;
+    left: 38%;
+}
+
+.dept-santander {
+    top: 29%;
+    left: 55%;
+}
+
+.dept-choco {
+    top: 36%;
+    left: 25%;
+}
+
+.dept-cundinamarca {
+    top: 44%;
+    left: 48%;
+}
+
+.dept-valle {
+    top: 51%;
+    left: 31%;
+}
+
+.dept-tolima {
+    top: 55%;
+    left: 47%;
+}
+
+.dept-huila {
+    top: 64%;
+    left: 43%;
+}
+
+.dept-meta {
+    top: 55%;
+    left: 62%;
+}
+
+.dept-narino {
+    top: 72%;
+    left: 28%;
+}
+
+.dept-amazonas {
+    top: 82%;
+    left: 58%;
+}
+
+/* Leyenda */
+
+.mapa-leyenda {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    color: #475569;
+    font-weight: 700;
+}
+
+.mapa-leyenda div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.leyenda-color {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+}
+
+.leyenda-color.alto {
+    background: #dc2626;
+}
+
+.leyenda-color.medio {
+    background: #f59e0b;
+}
+
+.leyenda-color.bajo {
+    background: #16a34a;
+}
+
+/* Panel derecho */
+
+.zona-info-panel {
+    padding: 32px;
+    position: sticky;
+    top: 110px;
+    align-self: start;
+    border-top: 6px solid #f59e0b;
+}
+
+.zona-info-panel.riesgo-alto {
+    border-top-color: #dc2626;
+}
+
+.zona-info-panel.riesgo-medio {
+    border-top-color: #f59e0b;
+}
+
+.zona-info-panel.riesgo-bajo {
+    border-top-color: #16a34a;
+}
+
+.panel-badge {
+    display: inline-block;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+.panel-badge.riesgo-alto {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.panel-badge.riesgo-medio {
+    background: #fef3c7;
+    color: #b45309;
+}
+
+.panel-badge.riesgo-bajo {
+    background: #dcfce7;
+    color: #15803d;
+}
+
+.zona-info-panel h2 {
+    font-size: 2rem;
+    color: #0f172a;
+    margin-bottom: 16px;
+}
+
+.panel-descripcion {
     color: #475569;
     line-height: 1.8;
-    font-size: 1rem;
     margin-bottom: 22px;
 }
 
-.zona-coordenadas {
+.panel-info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
-    padding-top: 14px;
-    border-top: 1px solid #e2e8f0;
+    margin-bottom: 22px;
 }
 
-.coord-box {
+.panel-info-box {
     background: #f8fbfd;
     border: 1px solid #e2e8f0;
-    border-radius: 16px;
-    padding: 14px;
+    border-radius: 18px;
+    padding: 16px;
 }
 
-.coord-label {
+.panel-info-box span {
     display: block;
-    font-size: 0.85rem;
     color: #64748b;
     margin-bottom: 6px;
+    font-size: 0.9rem;
 }
 
-.coord-box strong {
+.panel-info-box strong {
     color: #0f172a;
-    font-size: 1rem;
 }
 
-.sin-zonas {
-    grid-column: 1 / -1;
-    background: white;
-    border-radius: 24px;
-    padding: 45px;
-    text-align: center;
-    box-shadow: 0 18px 36px rgba(15, 76, 129, 0.08);
+.panel-recomendacion {
+    background: #f8fbfd;
+    border-radius: 20px;
+    padding: 20px;
+    border: 1px solid #e2e8f0;
 }
 
-.sin-zonas h3 {
-    font-size: 1.8rem;
-    color: #0f172a;
+.panel-recomendacion h3 {
+    color: #0f4c81;
     margin-bottom: 10px;
 }
 
-.sin-zonas p {
+.panel-recomendacion p {
     color: #475569;
-    font-size: 1.05rem;
+    line-height: 1.7;
 }
+
+/* Responsive */
 
 @media (max-width: 1100px) {
     .zonas-resumen {
         grid-template-columns: repeat(2, 1fr);
     }
 
-    .zonas-grid {
+    .zonas-mapa-layout {
         grid-template-columns: 1fr;
+    }
+
+    .zona-info-panel {
+        position: static;
     }
 }
 
@@ -225,11 +416,20 @@
         font-size: 2.2rem;
     }
 
-    .zona-coordenadas {
+    .zonas-resumen {
         grid-template-columns: 1fr;
     }
 
-    .zonas-resumen {
+    .mapa-colombia {
+        min-height: 560px;
+    }
+
+    .departamento {
+        font-size: 0.72rem;
+        padding: 8px 10px;
+    }
+
+    .panel-info-grid {
         grid-template-columns: 1fr;
     }
 }

@@ -6,17 +6,17 @@
 <section class="zonas-page">
     <div class="zonas-top">
         <span class="zonas-badge">Seguimiento territorial</span>
-        <h1>Zonas de riesgo</h1>
+        <h1>Zonas de riesgo en Colombia</h1>
         <p>
-            Consulta las áreas monitoreadas, su nivel de riesgo y la descripción
-            sanitaria registrada actualmente en el sistema.
+            Selecciona un departamento en el mapa para consultar su nivel de riesgo,
+            estado sanitario y recomendaciones básicas de prevención.
         </p>
     </div>
 
     <div class="zonas-resumen">
         <div class="zona-stat">
-            <h3>{{ zonas|length }}</h3>
-            <p>Zonas registradas</p>
+            <h3>Colombia</h3>
+            <p>Mapa interactivo</p>
         </div>
         <div class="zona-stat alto">
             <h3>Alto</h3>
@@ -32,50 +32,65 @@
         </div>
     </div>
 
-    <div class="zonas-grid">
-        {% if zonas %}
-            {% for zona in zonas %}
-            <article class="zona-card zona-{{ zona.nivel_riesgo }}">
-                <div class="zona-header">
-                    <div class="zona-icono">
-                        {% if zona.nivel_riesgo == 'alto' %}
-                            📍
-                        {% elif zona.nivel_riesgo == 'medio' %}
-                            🗺️
-                        {% else %}
-                            ✅
-                        {% endif %}
-                    </div>
-
-                    <div class="zona-header-info">
-                        <span class="zona-nivel nivel-{{ zona.nivel_riesgo }}">
-                            Riesgo {{ zona.nivel_riesgo|capitalize }}
-                        </span>
-                        <h2>{{ zona.nombre_zona }}</h2>
-                    </div>
-                </div>
-
-                <p class="zona-descripcion">{{ zona.descripcion }}</p>
-                <div class="dashboard-card fade-in"></div>
-
-                <div class="zona-coordenadas">
-                    <div class="coord-box">
-                        <span class="coord-label">Latitud</span>
-                        <strong>{{ zona.latitud if zona.latitud is not none else 'No registrada' }}</strong>
-                    </div>
-                    <div class="coord-box">
-                        <span class="coord-label">Longitud</span>
-                        <strong>{{ zona.longitud if zona.longitud is not none else 'No registrada' }}</strong>
-                    </div>
-                </div>
-            </article>
-            {% endfor %}
-        {% else %}
-            <div class="sin-zonas">
-                <h3>No hay zonas registradas</h3>
-                <p>Actualmente no se han registrado zonas de riesgo en el sistema.</p>
+    <div class="zonas-mapa-layout">
+        <div class="mapa-colombia-card">
+            <div class="mapa-header">
+                <span>Mapa de Colombia</span>
+                <p>Haz clic sobre un departamento para ver su información.</p>
             </div>
-        {% endif %}
+
+            <div class="mapa-colombia">
+                <button class="departamento dept-caribe" data-departamento="Atlántico">Atlántico</button>
+                <button class="departamento dept-bolivar" data-departamento="Bolívar">Bolívar</button>
+                <button class="departamento dept-antioquia" data-departamento="Antioquia">Antioquia</button>
+                <button class="departamento dept-santander" data-departamento="Santander">Santander</button>
+                <button class="departamento dept-choco" data-departamento="Chocó">Chocó</button>
+                <button class="departamento dept-cundinamarca" data-departamento="Cundinamarca">Cundinamarca</button>
+                <button class="departamento dept-valle" data-departamento="Valle del Cauca">Valle</button>
+                <button class="departamento dept-tolima" data-departamento="Tolima">Tolima</button>
+                <button class="departamento dept-huila" data-departamento="Huila">Huila</button>
+                <button class="departamento dept-meta" data-departamento="Meta">Meta</button>
+                <button class="departamento dept-narino" data-departamento="Nariño">Nariño</button>
+                <button class="departamento dept-amazonas" data-departamento="Amazonas">Amazonas</button>
+            </div>
+
+            <div class="mapa-leyenda">
+                <div><span class="leyenda-color alto"></span> Riesgo alto</div>
+                <div><span class="leyenda-color medio"></span> Riesgo medio</div>
+                <div><span class="leyenda-color bajo"></span> Riesgo bajo</div>
+            </div>
+        </div>
+
+        <aside class="zona-info-panel" id="zonaInfoPanel">
+            <span class="panel-badge" id="panelNivel">Riesgo medio</span>
+            <h2 id="panelDepartamento">Antioquia</h2>
+
+            <p class="panel-descripcion" id="panelDescripcion">
+                Departamento en seguimiento por presencia de condiciones ambientales favorables
+                para la aparición de focos sanitarios.
+            </p>
+
+            <div class="panel-info-grid">
+                <div class="panel-info-box">
+                    <span>Estado</span>
+                    <strong id="panelEstado">Seguimiento activo</strong>
+                </div>
+
+                <div class="panel-info-box">
+                    <span>Prioridad</span>
+                    <strong id="panelPrioridad">Media</strong>
+                </div>
+            </div>
+
+            <div class="panel-recomendacion">
+                <h3>Recomendación básica</h3>
+                <p id="panelRecomendacion">
+                    Mantener vigilancia comunitaria, eliminar aguas estancadas y reportar posibles focos.
+                </p>
+            </div>
+        </aside>
     </div>
 </section>
+
+<script src="{{ url_for('static', filename='js/zonas.js') }}"></script>
 {% endblock %}
