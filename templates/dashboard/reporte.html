@@ -1,23 +1,137 @@
 {% extends 'base.html' %}
 
-{% block title %}Reporte de focos{% endblock %}
+{% block title %}
+    {% if session.get('rol') == 'estudiante' %}
+        Ver focos reportados
+    {% elif session.get('rol') == 'gerente' %}
+        Gestión de reportes
+    {% else %}
+        Reporte de focos
+    {% endif %}
+{% endblock %}
 
 {% block content %}
 <section class="reporte-page">
     <div class="reporte-top">
         <div class="reporte-hero">
-            <span class="reporte-badge">Registro sanitario</span>
-            <h1>Reporte de focos de riesgo</h1>
-            <p>
-                Registra focos o situaciones que puedan representar riesgo sanitario.
-                La información quedará almacenada para seguimiento dentro del sistema.
-            </p>
+            {% if session.get('rol') == 'estudiante' %}
+                <span class="reporte-badge">Consulta sanitaria</span>
+                <h1>Ver focos reportados</h1>
+                <p>
+                    Consulta los focos de riesgo registrados por el personal de salud,
+                    revisa su nivel de riesgo y conoce los profesionales activos dentro del sistema.
+                </p>
+            {% elif session.get('rol') == 'gerente' %}
+                <span class="reporte-badge">Gestión sanitaria</span>
+                <h1>Gestión de reportes y usuarios</h1>
+                <p>
+                    Consulta los reportes recientes, revisa el personal de salud activo
+                    y visualiza los estudiantes registrados dentro del sistema.
+                </p>
+            {% else %}
+                <span class="reporte-badge">Registro sanitario</span>
+                <h1>Reporte de focos de riesgo</h1>
+                <p>
+                    Registra focos o situaciones que puedan representar riesgo sanitario.
+                    Los reportes permiten hacer seguimiento a posibles zonas de riesgo.
+                </p>
+            {% endif %}
         </div>
     </div>
 
     <div class="reporte-layout">
-        <div class="reporte-form-card">
-            <h2>Nuevo reporte</h2>
+        {% if session.get('rol') == 'salud' %}
+            <div class="reporte-form-card">
+                <h2>Nuevo reporte</h2>
+
+                {% with messages = get_flashed_messages() %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="reporte-flash">{{ message }}</div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="/reporte" method="POST" class="reporte-form" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="ubicacion">Ubicación</label>
+                        <input 
+                            type="text" 
+                            id="ubicacion" 
+                            name="ubicacion" 
+                            placeholder="Ej: Barrio La Esperanza, sector norte" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="tipo_foco">Tipo de foco</label>
+                        <select id="tipo_foco" name="tipo_foco" required>
+                            <option value="">Seleccione una opción</option>
+                            <option value="Agua estancada">Agua estancada</option>
+                            <option value="Basuras acumuladas">Basuras acumuladas</option>
+                            <option value="Criadero de mosquitos">Criadero de mosquitos</option>
+                            <option value="Canal o alcantarilla">Canal o alcantarilla</option>
+                            <option value="Otro">Otro</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fecha_reporte">Fecha del reporte</label>
+                        <input 
+                            type="date" 
+                            id="fecha_reporte" 
+                            name="fecha_reporte" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="nivel_riesgo">Nivel de riesgo</label>
+                        <select id="nivel_riesgo" name="nivel_riesgo" required>
+                            <option value="">Seleccione el nivel</option>
+                            <option value="bajo">Bajo</option>
+                            <option value="medio">Medio</option>
+                            <option value="alto">Alto</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="descripcion">Descripción</label>
+                        <textarea 
+                            id="descripcion" 
+                            name="descripcion" 
+                            rows="5" 
+                            placeholder="Describe claramente la situación encontrada..." 
+                            required
+                        ></textarea>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <label for="foto_reporte">Foto del foco</label>
+                        <input 
+                            type="file" 
+                            id="foto_reporte" 
+                            name="foto_reporte" 
+                            accept="image/png, image/jpeg, image/jpg, image/webp"
+                        >
+                    </div>
+
+                    <button type="submit" class="btn-reporte">Guardar reporte</button>
+                </form>
+            </div>
+        {% endif %}
+
+        <div class="reporte-side-card {% if session.get('rol') != 'salud' %}reporte-side-card-estudiante{% endif %}">
+            <h3>
+                {% if session.get('rol') == 'estudiante' %}
+                    Información de consulta
+                {% elif session.get('rol') == 'gerente' %}
+                    Panel de gerente
+                {% else %}
+                    Información del sistema
+                {% endif %}
+            </h3>
 
             {% with messages = get_flashed_messages() %}
                 {% if messages %}
@@ -27,82 +141,27 @@
                 {% endif %}
             {% endwith %}
 
-            <form action="/reporte" method="POST" class="reporte-form" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="ubicacion">Ubicación</label>
-                    <input 
-                        type="text" 
-                        id="ubicacion" 
-                        name="ubicacion" 
-                        placeholder="Ej: Barrio La Esperanza, sector norte" 
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="tipo_foco">Tipo de foco</label>
-                    <select id="tipo_foco" name="tipo_foco" required>
-                        <option value="">Seleccione una opción</option>
-                        <option value="Agua estancada">Agua estancada</option>
-                        <option value="Basuras acumuladas">Basuras acumuladas</option>
-                        <option value="Criadero de mosquitos">Criadero de mosquitos</option>
-                        <option value="Canal o alcantarilla">Canal o alcantarilla</option>
-                        <option value="Otro">Otro</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="fecha_reporte">Fecha del reporte</label>
-                    <input 
-                        type="date" 
-                        id="fecha_reporte" 
-                        name="fecha_reporte" 
-                        required
-                    >
-                </div>
-
-                <div class="form-group">
-                    <label for="nivel_riesgo">Nivel de riesgo</label>
-                    <select id="nivel_riesgo" name="nivel_riesgo" required>
-                        <option value="">Seleccione el nivel</option>
-                        <option value="bajo">Bajo</option>
-                        <option value="medio">Medio</option>
-                        <option value="alto">Alto</option>
-                    </select>
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="descripcion">Descripción</label>
-                    <textarea 
-                        id="descripcion" 
-                        name="descripcion" 
-                        rows="5" 
-                        placeholder="Describe claramente la situación encontrada..." 
-                        required
-                    ></textarea>
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="foto_reporte">Foto del foco</label>
-                    <input 
-                        type="file" 
-                        id="foto_reporte" 
-                        name="foto_reporte" 
-                        accept="image/png, image/jpeg, image/jpg, image/webp"
-                    >
-                </div>
-
-                <button type="submit" class="btn-reporte">Guardar reporte</button>
-            </form>
-        </div>
-
-        <div class="reporte-side-card">
-            <h3>Recomendaciones</h3>
             <ul>
-                <li>Indica una ubicación lo más clara posible.</li>
-                <li>Describe el foco con precisión.</li>
-                <li>Selecciona el nivel de riesgo de forma responsable.</li>
-                <li>Registra el reporte el mismo día si es posible.</li>
+                {% if session.get('rol') == 'estudiante' %}
+                    <li>Puedes consultar los focos reportados.</li>
+                    <li>Puedes revisar el nivel de riesgo de cada reporte.</li>
+                    <li>Puedes ver los profesionales registrados.</li>
+                    <li>No puedes registrar ni eliminar información.</li>
+                {% elif session.get('rol') == 'salud' %}
+                    <li>Puedes registrar nuevos focos de riesgo.</li>
+                    <li>Puedes subir una foto del foco reportado.</li>
+                    <li>Tus reportes quedarán asociados a tu usuario.</li>
+                    <li>No puedes eliminar reportes ni profesionales.</li>
+                {% elif session.get('rol') == 'gerente' %}
+                    <li>Puedes consultar los reportes registrados.</li>
+                    <li>Puedes ver el personal de salud activo.</li>
+                    <li>Puedes ver los estudiantes registrados.</li>
+                    <li>Puedes eliminar reportes y personal de salud.</li>
+                    <li>No puedes registrar nuevos focos.</li>
+                {% else %}
+                    <li>Consulta la información sanitaria disponible.</li>
+                    <li>Revisa los reportes registrados en el sistema.</li>
+                {% endif %}
             </ul>
 
             <div class="reporte-mini-stats">
@@ -110,10 +169,18 @@
                     <strong>{{ reportes|length }}</strong>
                     <span>Reportes registrados</span>
                 </div>
+
                 <div class="mini-box">
-                    <strong>Activo</strong>
-                    <span>Monitoreo continuo</span>
+                    <strong>{{ profesionales|length }}</strong>
+                    <span>Profesionales activos</span>
                 </div>
+
+                {% if session.get('rol') == 'gerente' %}
+                    <div class="mini-box">
+                        <strong>{{ estudiantes|length }}</strong>
+                        <span>Estudiantes registrados</span>
+                    </div>
+                {% endif %}
             </div>
         </div>
     </div>
@@ -143,8 +210,14 @@
                         <div class="profesional-info">
                             <h3>{{ profesional.nombre }}</h3>
 
+                            <p>
+                                <strong>Rol:</strong> Personal de salud
+                            </p>
+
                             {% if profesional.area %}
-                                <p>{{ profesional.area }}</p>
+                                <p>
+                                    <strong>Área:</strong> {{ profesional.area }}
+                                </p>
                             {% endif %}
 
                             {% if session.get('rol') == 'gerente' %}
@@ -171,9 +244,57 @@
         {% endif %}
     </div>
 
+    {% if session.get('rol') == 'gerente' %}
+        <div class="estudiantes-section">
+            <div class="lista-header">
+                <h2>Estudiantes registrados</h2>
+                <p>Usuarios con perfil de estudiante registrados en Tropi Alert.</p>
+            </div>
+
+            {% if estudiantes %}
+                <div class="estudiantes-grid">
+                    {% for estudiante in estudiantes %}
+                        <article class="estudiante-card">
+                            <div class="estudiante-avatar">
+                                🎓
+                            </div>
+
+                            <div class="estudiante-info">
+                                <h3>{{ estudiante.nombre }}</h3>
+
+                                <p>
+                                    <strong>Rol:</strong> Estudiante
+                                </p>
+
+                                <p>
+                                    <strong>Correo:</strong> {{ estudiante.correo }}
+                                </p>
+
+                                <p>
+                                    <strong>Fecha de registro:</strong> {{ estudiante.fecha_registro }}
+                                </p>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="sin-reportes">
+                    <h3>Aún no hay estudiantes registrados</h3>
+                    <p>Cuando se registren usuarios como estudiantes, aparecerán en esta sección.</p>
+                </div>
+            {% endif %}
+        </div>
+    {% endif %}
+
     <div class="reportes-lista">
         <div class="lista-header">
-            <h2>Reportes recientes</h2>
+            <h2>
+                {% if session.get('rol') == 'estudiante' %}
+                    Focos reportados
+                {% else %}
+                    Reportes recientes
+                {% endif %}
+            </h2>
             <p>Seguimiento de focos registrados en el sistema.</p>
         </div>
 
@@ -220,7 +341,7 @@
                             </div>
                         </div>
 
-                        {% if session.get('rol') in ['admin', 'gerente'] %}
+                        {% if session.get('rol') == 'gerente' %}
                             <form 
                                 action="{{ url_for('dashboard.eliminar_reporte', reporte_id=reporte.id) }}" 
                                 method="POST"
@@ -238,7 +359,7 @@
         {% else %}
             <div class="sin-reportes">
                 <h3>Aún no hay reportes</h3>
-                <p>Cuando registres un foco, aparecerá en esta sección.</p>
+                <p>Cuando el personal de salud registre un foco, aparecerá en esta sección.</p>
             </div>
         {% endif %}
     </div>

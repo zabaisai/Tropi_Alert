@@ -66,13 +66,18 @@ def obtener_reportes():
     conexion.close()
 
     return reportes
+
+
 def eliminar_reporte_por_id(reporte_id):
     conexion = obtener_conexion()
     cursor = conexion.cursor()
 
-    sql = "DELETE FROM reportes_focos WHERE id = %s"
-    cursor.execute(sql, (reporte_id,))
+    sql = """
+        DELETE FROM reportes_focos 
+        WHERE id = %s
+    """
 
+    cursor.execute(sql, (reporte_id,))
     conexion.commit()
 
     cursor.close()

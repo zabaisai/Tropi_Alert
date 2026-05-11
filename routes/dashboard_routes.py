@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.reporte_model import crear_reporte, obtener_reportes, eliminar_reporte_por_id
-from models.usuario_model import obtener_profesionales_salud, eliminar_personal_salud_por_usuario_id
+from models.usuario_model import obtener_profesionales_salud, eliminar_personal_salud_por_usuario_id, obtener_estudiantes
 from utils.auth import redirigir_si_no_logueado
 from utils.validators import validar_campos_vacios, validar_texto_minimo
 from werkzeug.utils import secure_filename
@@ -32,6 +32,10 @@ def reporte():
         return control
 
     if request.method == 'POST':
+        if session.get('rol') != 'salud':
+            flash('Solo el personal de salud puede registrar reportes de focos.')
+            return redirect(url_for('dashboard.reporte'))
+
         ubicacion = request.form['ubicacion']
         tipo_foco = request.form['tipo_foco']
         descripcion = request.form['descripcion']
@@ -88,21 +92,26 @@ def reporte():
 
         flash('Reporte registrado correctamente')
         return redirect(url_for('dashboard.reporte'))
-    
+
     lista_reportes = obtener_reportes()
     lista_profesionales = obtener_profesionales_salud()
+    lista_estudiantes = obtener_estudiantes()
 
     return render_template(
-      'dashboard/reporte.html',
-      reportes=lista_reportes,
-      profesionales=lista_profesionales)
+        'dashboard/reporte.html',
+        reportes=lista_reportes,
+        profesionales=lista_profesionales,
+        estudiantes=lista_estudiantes
+    )
+
+
 @dashboard_bp.route('/eliminar-reporte/<int:reporte_id>', methods=['POST'])
 def eliminar_reporte(reporte_id):
     control = redirigir_si_no_logueado()
     if control:
         return control
 
-    if session.get('rol') not in ['admin', 'gerente']:
+    if session.get('rol') != 'gerente':
         flash('No tienes permisos para eliminar reportes')
         return redirect(url_for('dashboard.reporte'))
 

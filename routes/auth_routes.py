@@ -5,6 +5,7 @@ from utils.validators import validar_email, validar_password, validar_texto_mini
 from werkzeug.utils import secure_filename
 import os
 
+
 auth_bp = Blueprint('auth', __name__)
 
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'webp'}
@@ -39,10 +40,6 @@ def login():
 
         if usuario:
             login_usuario(usuario)
-
-            if usuario['rol'] == 'admin':
-                return redirect(url_for('admin.panel_admin'))
-
             return redirect(url_for('dashboard.dashboard'))
 
         flash('Correo o contraseña incorrectos')
@@ -76,8 +73,8 @@ def guardar_registro():
         return redirect(url_for('auth.registro'))
 
     if rol not in ['estudiante', 'salud', 'gerente']:
-     flash('Tipo de usuario inválido')
-     return redirect(url_for('auth.registro'))
+        flash('Tipo de usuario inválido')
+        return redirect(url_for('auth.registro'))
 
     if not validar_texto_minimo(nombre, 3):
         flash('El nombre debe tener al menos 3 caracteres')

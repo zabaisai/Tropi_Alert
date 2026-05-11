@@ -8,10 +8,28 @@
         <div class="dashboard-hero-text">
             <span class="dashboard-badge">📊 Panel principal</span>
             <h1>Bienvenido, {{ session['usuario_nombre'] }}</h1>
-            <p>
-                Accede rápidamente a la información clave del sistema, revisa alertas,
-                consulta zonas de riesgo y reporta focos sanitarios desde un solo lugar.
-            </p>
+
+            {% if session.get('rol') == 'estudiante' %}
+                <p>
+                    Accede a la información clave del sistema, consulta zonas de riesgo,
+                    revisa alertas sanitarias y visualiza los focos reportados por el personal de salud.
+                </p>
+            {% elif session.get('rol') == 'salud' %}
+                <p>
+                    Accede rápidamente a la información clave del sistema, revisa alertas,
+                    consulta zonas de riesgo y registra focos sanitarios para seguimiento.
+                </p>
+            {% elif session.get('rol') == 'gerente' %}
+                <p>
+                    Gestiona la información del sistema, revisa reportes, consulta profesionales
+                    registrados y administra los focos sanitarios reportados.
+                </p>
+            {% else %}
+                <p>
+                    Accede rápidamente a la información clave del sistema, revisa alertas,
+                    consulta zonas de riesgo y reporta focos sanitarios desde un solo lugar.
+                </p>
+            {% endif %}
         </div>
 
         <div class="dashboard-hero-stats">
@@ -59,12 +77,28 @@
             <a href="/zonas">Consultar zonas</a>
         </div>
 
-        <div class="dashboard-card destacado">
-            <div class="card-icon yellow">📝</div>
-            <h3>Reportar foco</h3>
-            <p>Registra posibles focos de infección o situaciones de riesgo para seguimiento sanitario.</p>
-            <a href="/reporte">Crear reporte</a>
-        </div>
+        {% if session.get('rol') == 'estudiante' %}
+            <div class="dashboard-card destacado">
+                <div class="card-icon yellow">👁️</div>
+                <h3>Ver focos</h3>
+                <p>Consulta los focos de riesgo registrados por el personal de salud y revisa su nivel de riesgo.</p>
+                <a href="/reporte">Ver reportes</a>
+            </div>
+        {% elif session.get('rol') == 'gerente' %}
+            <div class="dashboard-card destacado">
+                <div class="card-icon yellow">🗂️</div>
+                <h3>Gestionar focos</h3>
+                <p>Consulta, registra y administra los reportes de focos sanitarios dentro del sistema.</p>
+                <a href="/reporte">Gestionar reportes</a>
+            </div>
+        {% else %}
+            <div class="dashboard-card destacado">
+                <div class="card-icon yellow">📝</div>
+                <h3>Reportar foco</h3>
+                <p>Registra posibles focos de infección o situaciones de riesgo para seguimiento sanitario.</p>
+                <a href="/reporte">Crear reporte</a>
+            </div>
+        {% endif %}
 
         <div class="dashboard-card logout-card">
             <div class="card-icon dark">🔒</div>

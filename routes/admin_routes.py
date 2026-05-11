@@ -5,6 +5,7 @@ from models.alerta_model import obtener_alertas_activas
 from models.noticia_model import obtener_noticias
 from models.zona_model import obtener_zonas_riesgo
 from utils.auth import redirigir_si_no_admin
+from utils.auth import redirigir_si_no_admin
 
 admin_bp = Blueprint('admin', __name__, url_prefix='/admin')
 

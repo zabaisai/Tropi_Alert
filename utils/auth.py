@@ -16,8 +16,16 @@ def usuario_logueado():
     return 'usuario_id' in session
 
 
-def es_admin():
-    return session.get('usuario_rol') == 'admin'
+def es_estudiante():
+    return session.get('rol') == 'estudiante'
+
+
+def es_personal_salud():
+    return session.get('rol') == 'salud'
+
+
+def es_gerente():
+    return session.get('rol') == 'gerente'
 
 
 def redirigir_si_no_logueado():
@@ -27,12 +35,12 @@ def redirigir_si_no_logueado():
     return None
 
 
-def redirigir_si_no_admin():
+def redirigir_si_no_gerente():
     if 'usuario_id' not in session:
         flash('Debes iniciar sesión primero')
         return redirect(url_for('auth.login'))
 
-    if session.get('usuario_rol') != 'admin':
+    if session.get('rol') != 'gerente':
         flash('No tienes permisos para acceder a esta sección')
         return redirect(url_for('dashboard.dashboard'))
 
