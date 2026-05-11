@@ -1,6 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from models.reporte_model import crear_reporte, obtener_reportes, eliminar_reporte_por_id
-from models.usuario_model import obtener_profesionales_salud, eliminar_personal_salud_por_usuario_id, obtener_estudiantes
+from models.usuario_model import (
+    obtener_profesionales_salud,
+    eliminar_personal_salud_por_usuario_id,
+    obtener_estudiantes,
+    eliminar_estudiante_por_id
+)
 from utils.auth import redirigir_si_no_logueado
 from utils.validators import validar_campos_vacios, validar_texto_minimo
 from werkzeug.utils import secure_filename
@@ -134,4 +139,20 @@ def eliminar_personal_salud(usuario_id):
     eliminar_personal_salud_por_usuario_id(usuario_id)
 
     flash('Personal de salud eliminado correctamente')
+    return redirect(url_for('dashboard.reporte'))
+
+
+@dashboard_bp.route('/eliminar-estudiante/<int:usuario_id>', methods=['POST'])
+def eliminar_estudiante(usuario_id):
+    control = redirigir_si_no_logueado()
+    if control:
+        return control
+
+    if session.get('rol') != 'gerente':
+        flash('No tienes permisos para eliminar estudiantes')
+        return redirect(url_for('dashboard.reporte'))
+
+    eliminar_estudiante_por_id(usuario_id)
+
+    flash('Estudiante eliminado correctamente')
     return redirect(url_for('dashboard.reporte'))

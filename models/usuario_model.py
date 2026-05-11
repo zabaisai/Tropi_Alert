@@ -173,3 +173,19 @@ def eliminar_personal_salud_por_usuario_id(usuario_id):
 
     cursor.close()
     conexion.close()
+
+
+def eliminar_estudiante_por_id(usuario_id):
+    conexion = obtener_conexion()
+    cursor = conexion.cursor()
+
+    sql = """
+        DELETE FROM usuarios
+        WHERE id = %s AND rol = 'estudiante'
+    """
+
+    cursor.execute(sql, (usuario_id,))
+    conexion.commit()
+
+    cursor.close()
+    conexion.close()

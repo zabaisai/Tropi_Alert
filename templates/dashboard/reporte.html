@@ -156,7 +156,7 @@
                     <li>Puedes consultar los reportes registrados.</li>
                     <li>Puedes ver el personal de salud activo.</li>
                     <li>Puedes ver los estudiantes registrados.</li>
-                    <li>Puedes eliminar reportes y personal de salud.</li>
+                    <li>Puedes eliminar reportes, personal de salud y estudiantes.</li>
                     <li>No puedes registrar nuevos focos.</li>
                 {% else %}
                     <li>Consulta la información sanitaria disponible.</li>
@@ -188,7 +188,7 @@
     <div class="profesionales-section">
         <div class="lista-header">
             <h2>Profesionales que trabajan con nosotros</h2>
-            <p>Personal de salud registrado en Tropi Alert para apoyar el seguimiento sanitario.</p>
+            <p>Personal de salud registrado en Tropi Alert para apoyar el seguimiento sanitario. Desliza horizontalmente para ver más.</p>
         </div>
 
         {% if profesionales %}
@@ -248,7 +248,7 @@
         <div class="estudiantes-section">
             <div class="lista-header">
                 <h2>Estudiantes registrados</h2>
-                <p>Usuarios con perfil de estudiante registrados en Tropi Alert.</p>
+                <p>Usuarios con perfil de estudiante registrados en Tropi Alert. Desliza horizontalmente para ver más.</p>
             </div>
 
             {% if estudiantes %}
@@ -273,6 +273,17 @@
                                 <p>
                                     <strong>Fecha de registro:</strong> {{ estudiante.fecha_registro }}
                                 </p>
+
+                                <form 
+                                    action="{{ url_for('dashboard.eliminar_estudiante', usuario_id=estudiante.id) }}" 
+                                    method="POST"
+                                    class="form-eliminar-estudiante"
+                                    onsubmit="return confirm('¿Seguro que deseas eliminar este estudiante? Esta acción no se puede deshacer.');"
+                                >
+                                    <button type="submit" class="btn-eliminar-reporte">
+                                        Eliminar estudiante
+                                    </button>
+                                </form>
                             </div>
                         </article>
                     {% endfor %}
